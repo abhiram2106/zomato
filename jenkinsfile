@@ -21,12 +21,12 @@ pipeline {
         }
         stage ("Build Docker Image") {
             steps {
-                sh "docker build -t zomato ."
+                sh "docker build -t zomato1 ."
             }
         }
         stage ("Deploy to Container") {
             steps {
-                sh 'docker run -d --name zomato -p 3000:3000 kastrov/zomato:latest'
+                sh 'docker run -d --name zomato_con -p 3005:3000 zomato1:v1'
             }
         }
     }
