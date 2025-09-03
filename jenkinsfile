@@ -1,5 +1,10 @@
 pipeline {
     agent any
+    environment {
+        DOCKER_HUB_USER = 'abhiram5673'        // 🔹 your DockerHub username
+        IMAGE_NAME      = 'zomato1'
+        IMAGE_TAG       = 'v1'
+    }
     tools {
         jdk 'jdk17'
     }
@@ -21,12 +26,47 @@ pipeline {
         }
         stage ("Build Docker Image") {
             steps {
-                sh "docker build -t zomato1 ."
+                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
             }
         }
+        stage('Push to DockerHub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',  // 🔹 Jenkins credential ID
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh '''
+                    echo "⚡ Logging into DockerHub..."
+                    echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+
+                    echo "⚡ Tagging image..."
+                    docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${DOCKER_HUB_USER}/${IMAGE_NAME}:${IMAGE_TAG}
+
+                    echo "⚡ Pushing image..."
+                    docker push ${DOCKER_HUB_USER}/${IMAGE_NAME}:${IMAGE_TAG}
+                    '''
+                }
+            }
+        }
+
         stage ("Deploy to Container") {
             steps {
                 sh 'docker run -d --name zomato_con -p 3005:3000 zomato1:latest'
+            }
+        }
+       stage('Deploy to Docker Swarm') {
+            steps {
+                script {
+                    sh '''
+                    docker service rm zomato-service || true
+                    docker service create \
+                        --name zomato-service \
+                        --publish 3005:3000 \
+                        --replicas 5 \
+                        ${DOCKER_HUB_USER}/${IMAGE_NAME}:${IMAGE_TAG}
+                    '''
+                }
             }
         }
     }
