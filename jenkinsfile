@@ -26,7 +26,7 @@ pipeline {
         }
         stage ("Deploy to Container") {
             steps {
-                sh 'docker run -d --name zomato_con -p 3005:3000 zomato1:v1'
+                sh 'docker run -d --name zomato_con -p 3005:3000 zomato1:latest'
             }
         }
     }
