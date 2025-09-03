@@ -52,7 +52,7 @@ pipeline {
 
         stage ("Deploy to Container") {
             steps {
-                sh 'docker run -d --name zomato_con -p 3005:3000 zomato1:latest'
+                sh 'docker run -d --name zomato_container -p 3006:3000 zomato1:latest'
             }
         }
        stage('Deploy to Docker Swarm') {
