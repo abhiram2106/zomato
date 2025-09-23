@@ -55,19 +55,19 @@ pipeline {
                 sh 'docker run -d --name zomato_container -p 3006:3000 zomato1:latest'
             }
         }
-      # stage('Deploy to Docker Swarm') {
-     #       steps {
-       #         script {
-        #            sh '''
-         #         docker service rm zomato-service || true
-          #         docker service create \
-         #               --name zomato-service \
-          #              --publish 3005:3000 \
-           #             --replicas 5 \
-            #           ${DOCKER_HUB_USER}/${IMAGE_NAME}:${IMAGE_TAG}
-             #       '''
-              #  }
-          #  }
-       # }
+      /* stage('Deploy to Docker Swarm') {
+            steps {
+                script {
+                    sh '''
+                  docker service rm zomato-service || true
+                   docker service create \
+                        --name zomato-service \
+                        --publish 3005:3000 \
+                        --replicas 5 \
+                       ${DOCKER_HUB_USER}/${IMAGE_NAME}:${IMAGE_TAG}
+                    '''
+                }
+            }
+        }*/
     }
 } 
