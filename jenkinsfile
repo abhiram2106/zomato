@@ -19,17 +19,12 @@ pipeline {
                 git 'https://github.com/abhiram2106/DevOps-Project-Zomato-Kastro.git'
             }
         }
-        stage("Install NPM Dependencies") {
-            steps {
-                sh "npm install"
-            }
-        }
         stage ("Build Docker Image") {
             steps {
                 sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
             }
         }
-        stage('Push to DockerHub') {
+        /*stage('Push to DockerHub') {
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'dockerhub-creds',  // 🔹 Jenkins credential ID
@@ -48,7 +43,7 @@ pipeline {
                     '''
                 }
             }
-        }
+        }*/
 
         stage ("Deploy to Container") {
             steps {
