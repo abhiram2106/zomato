@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-       */ DOCKER_HUB_USER = 'abhiram5673'      /*  // 🔹 your DockerHub username
+    /*  DOCKER_HUB_USER = 'abhiram5673'      */  // 🔹 your DockerHub username
         IMAGE_NAME      = 'zomato1'
         IMAGE_TAG       = 'v1'
     }
