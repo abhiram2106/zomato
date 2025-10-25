@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_HUB_USER = 'abhiram5673'        // 🔹 your DockerHub username
+       */ DOCKER_HUB_USER = 'abhiram5673'      /*  // 🔹 your DockerHub username
         IMAGE_NAME      = 'zomato1'
         IMAGE_TAG       = 'v1'
     }
@@ -47,7 +47,7 @@ pipeline {
 
         stage ("Deploy to Container") {
             steps {
-                sh 'docker run -d --name zomato_container -p 3006:3000 zomato1:latest'
+                sh 'docker run -d --name zomato_container -p 3006:3000 zomato1:v1'
             }
         }
       /* stage('Deploy to Docker Swarm') {
